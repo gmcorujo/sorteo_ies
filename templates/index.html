@@ -6,24 +6,17 @@
     <title>Sorteo</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .container {
-            margin-top: 50px;
-        }
-        .error {
-            color: red;
-        }
-    </style>
+    
+    <link rel="stylesheet" href="../static/styles.css">
+
 </head>
 <body>
     <div class="container">
         <img src="" alt="">
     </div>
     <div class="container">
-        <h1 class="text-center mb-4">Realizar Sorteo</h1>
+        <h1 class="text-center mb-4"><img src="../static/IFDC.jpg" alt="">IFDC María Inés Elizalde</h1>
+        <h2 class="text-center mb-4">Realizar Sorteo</h2>
         {% if error %}
             <div class="alert alert-danger">{{ error }}</div>
         {% endif %}

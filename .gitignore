@@ -169,3 +169,8 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# pdf and xlsx
+*.xlsx
+*.pdf
+*.ods

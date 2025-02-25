@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, send_file
 import pandas as pd
 import random
-from fpdf import FPDF
 import os
+from fpdf import FPDF
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
@@ -37,6 +37,8 @@ def index():
         # Leer el archivo Excel
         try:
             df = pd.read_excel(ruta_archivo)
+            # Reemplazar NaN con cadenas vacías
+            df = df.fillna("")
         except Exception as e:
             return render_template('index.html', error=f"Error al leer el archivo: {e}")
 
@@ -49,8 +51,8 @@ def index():
         return render_template('resultado.html', 
                                preinscritos=preinscritos, 
                                reservas=reservas_seleccionadas,
-                               pre_inscriptos=pre_inscriptos,  # Asegúrate de pasar esta variable
-                               reservas_count=reservas)       # Asegúrate de pasar esta variable
+                               pre_inscriptos=pre_inscriptos,
+                               reservas_count=reservas)
 
     return render_template('index.html')
 
@@ -78,6 +80,10 @@ def descargar_excel():
     df_preinscritos = pd.DataFrame(eval(preinscritos[0]))
     df_reservas = pd.DataFrame(eval(reservas[0]))
 
+    # Reemplazar NaN con cadenas vacías
+    df_preinscritos = df_preinscritos.fillna("")
+    df_reservas = df_reservas.fillna("")
+
     # Crear un archivo Excel con múltiples hojas
     with pd.ExcelWriter('resultados.xlsx', engine='openpyxl') as writer:
         df_preinscritos.to_excel(writer, sheet_name='Preinscritos', index=False)
@@ -100,17 +106,22 @@ def descargar_pdf():
     # Añadir preinscritos al PDF
     pdf.cell(200, 10, txt="Preinscritos", ln=True, align='C')
     for participante in eval(preinscritos[0]):
-        pdf.cell(200, 10, txt=f"{participante['Numero']} - {participante['Nombre']} {participante['Apellido']}", ln=True)
+        numero = participante.get('Numero', '')
+        nombre = participante.get('Nombre', '')
+        apellido = participante.get('Apellido', '')
+        pdf.cell(200, 10, txt=f"{numero} - {nombre} {apellido}", ln=True)
 
     # Añadir reservas al PDF
     pdf.cell(200, 10, txt="Reservas", ln=True, align='C')
     for participante in eval(reservas[0]):
-        pdf.cell(200, 10, txt=f"{participante['Numero']} - {participante['Nombre']} {participante['Apellido']}", ln=True)
+        numero = participante.get('Numero', '')
+        nombre = participante.get('Nombre', '')
+        apellido = participante.get('Apellido', '')
+        pdf.cell(200, 10, txt=f"{numero} - {nombre} {apellido}", ln=True)
 
     # Guardar el PDF
     pdf.output("resultados.pdf")
     return send_file('resultados.pdf', as_attachment=True)
-
 
 # Ejecutar la aplicación
 if __name__ == '__main__':
