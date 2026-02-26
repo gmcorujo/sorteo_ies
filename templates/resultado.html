@@ -66,14 +66,14 @@
         <div class="container pb-4">
             <!-- Botones de descarga -->
             <form action="/descargar_excel" method="POST" style="display: inline;">
-                <input type="hidden" name="preinscritos[]" value="{{ preinscritos }}">
-                <input type="hidden" name="reservas[]" value="{{ reservas }}">
+                <input type="hidden" name="preinscritos_json" value='{{ preinscritos|tojson }}'>
+                <input type="hidden" name="reservas_json" value='{{ reservas|tojson }}'>
                 <button type="submit" class="btn btn-success me-2">Descargar Excel</button>
             </form>
 
             <form action="/descargar_pdf" method="POST" style="display: inline;">
-                <input type="hidden" name="preinscritos[]" value="{{ preinscritos }}">
-                <input type="hidden" name="reservas[]" value="{{ reservas }}">
+                <input type="hidden" name="preinscritos_json" value='{{ preinscritos|tojson }}'>
+                <input type="hidden" name="reservas_json" value='{{ reservas|tojson }}'>
                 <button type="submit" class="btn btn-danger">Descargar PDF</button>
             </form>
         </div>
